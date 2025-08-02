@@ -32,10 +32,10 @@ pipeline {
         sshagent(['ec2-ssh-key']) {
           sh '''
             ssh -o StrictHostKeyChecking=no ubuntu@13.201.127.123 '
-              docker pull seetharamj/devops-node-app &&
+              docker pull seetharam10/devops-node-app &&
               docker stop devops-app || true &&
               docker rm devops-app || true &&
-              docker run -d -p 3000:3000 --name devops-app seetharamj/devops-node-app
+              docker run -d -p 3000:3000 --name devops-app seetharam10/devops-node-app
             '
           '''
         }
