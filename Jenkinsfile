@@ -1,33 +1,35 @@
 pipeline {
   agent any
 
+  environment {
+    DOCKERHUB_CREDENTIALS = credentials('dockerhub-login')
+  }
+
   stages {
     stage('Clone Repo') {
       steps {
-        git branch: 'main', url: 'https://github.com/Seetharamj/Devops-project-.git'
+        git 'https://github.com/Seetharamj/Devops-project-.git'
       }
     }
 
     stage('Build Docker Image') {
       steps {
-        sh 'docker build -t seetharamj/devops-node-app .'
+        dir('app') {
+          sh 'docker build -t seetharamj/devops-node-app .'
+        }
       }
     }
 
     stage('Push to DockerHub') {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'dockerhub-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-          sh '''
-            echo $PASSWORD | docker login -u $USERNAME --password-stdin
-            docker push seetharamj/devops-node-app
-          '''
-        }
+        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+        sh 'docker push seetharamj/devops-node-app'
       }
     }
 
     stage('Deploy to EC2') {
       steps {
-        sshagent(credentials: ['ec2-ssh-key']) {
+        sshagent(['ec2-ssh-key']) {
           sh '''
             ssh -o StrictHostKeyChecking=no ubuntu@13.201.127.123 '
               docker pull seetharamj/devops-node-app &&
