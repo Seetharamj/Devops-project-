@@ -1,54 +1,48 @@
-🚀 DevOps CI/CD Project: Jenkins + Docker + Terraform
-This project automates the CI/CD pipeline for a Node.js application using Jenkins, Docker, and Terraform.
-It builds the app, pushes a Docker image to Docker Hub, and deploys it to an EC2 instance provisioned via Terraform.
+# 🚀 DevOps CI/CD Project: Jenkins + Docker + Terraform
 
-🔧 Tech Stack
-🐳 Docker
+This project automates a CI/CD pipeline for a Node.js application using **Jenkins**, **Docker**, and **Terraform**.  
+It builds a Docker image, pushes it to Docker Hub, and deploys it to an EC2 instance provisioned by Terraform.
 
-⚙️ Jenkins
+---
 
-☁️ AWS EC2 (Provisioned via Terraform)
+## 🔧 Tech Stack
 
-📦 Docker Hub (Image Registry)
+- 🐳 Docker
+- ⚙️ Jenkins
+- ☁️ AWS EC2 (via Terraform)
+- 📦 Docker Hub
+- 💻 GitHub
 
-💻 GitHub (Source Code Repository)
+---
 
-📁 Project Structure
-bash
-Copy
-Edit
+## 📁 Project Structure
+
 Devops-project-/
-│
 ├── jenkins/
-│   └── Jenkinsfile             # CI/CD pipeline definition
-│
+│ └── Jenkinsfile # CI/CD pipeline definition
 ├── terraform/
-│   ├── main.tf                 # AWS infrastructure setup (VPC, EC2, SG)
-│   └── variables.tf            # Terraform variables
-│
+│ ├── main.tf # AWS infrastructure (VPC, EC2, etc.)
+│ └── variables.tf # Terraform variables
 ├── app/
-│   ├── Dockerfile              # Container image for Node.js app
-│   └── index.js                # Sample Node.js app
-│
-└── README.md                   # You're here
-🛠️ How It Works
-Terraform provisions:
+│ ├── Dockerfile # Docker image for Node.js app
+│ └── index.js # Sample Node.js app
+└── README.md 
 
-A VPC
+---
 
-Public subnet
+## 🛠️ How It Works
 
-Security group
+1. **Terraform** provisions:
+   - A VPC
+   - Public subnet
+   - Security group
+   - EC2 instance (Ubuntu)
 
-EC2 instance (Ubuntu)
+2. **Jenkins Pipeline**:
+   - Clones GitHub repo
+   - Builds Docker image
+   - Pushes image to DockerHub
+   - SSH into EC2 & deploys container
 
-Jenkins Pipeline does:
-
-Clone GitHub repo
-
-Build Docker image
-
-Push image to DockerHub
-
-SSH into EC2 & deploy container
+---
 
