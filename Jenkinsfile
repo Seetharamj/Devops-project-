@@ -5,12 +5,12 @@ pipeline {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub-login')
   }
 
-  stages {
-    stage('Clone Repo') {
-      steps {
-        git 'https://github.com/Seetharamj/Devops-project-.git'
-      }
-    }
+ stage('Clone Repo') {
+  steps {
+    git branch: 'main', url: 'https://github.com/Seetharamj/Devops-project-.git'
+  }
+}
+
 
     stage('Build Docker Image') {
       steps {
