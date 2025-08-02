@@ -1,5 +1,6 @@
 pipeline {
   agent any
+
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub-login')
   }
@@ -7,20 +8,20 @@ pipeline {
   stages {
     stage('Clone Repo') {
       steps {
-        git 'https://github.com/your-user/your-repo.git'
+        git 'https://github.com/Seetharamj/Devops-project-.git'
       }
     }
 
     stage('Build Docker Image') {
       steps {
-        sh 'docker build -t MyImage/nodeapp .'
+        sh 'docker build -t seetharamj/devops-node-app .'
       }
     }
 
     stage('Push to DockerHub') {
       steps {
         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-        sh 'docker push MyImage/nodeapp'
+        sh 'docker push seetharamj/devops-node-app'
       }
     }
 
@@ -28,15 +29,30 @@ pipeline {
       steps {
         sshagent(['ec2-ssh-key']) {
           sh '''
-            ssh -o StrictHostKeyChecking=no ubuntu@<APP_EC2_IP> '
-              docker pull yourname/nodeapp &&
-              docker stop nodeapp || true &&
-              docker rm nodeapp || true &&
-              docker run -d -p 3000:3000 --name nodeapp yourname/nodeapp
+            ssh -o StrictHostKeyChecking=no ubuntu@13.201.127.123 '
+              docker pull seetharamj/devops-node-app &&
+              docker stop devops-app || true &&
+              docker rm devops-app || true &&
+              docker run -d -p 3000:3000 --name devops-app seetharamj/devops-node-app
             '
           '''
         }
       }
+    }
+  }
+
+  post {
+    success {
+      echo '✅ Pipeline completed successfully!'
+     
+    }
+    failure {
+      echo '❌ Pipeline failed. Check the logs above.'
+      
+    }
+    always {
+      echo '⚙️ Pipeline has finished running (success or fail).'
+  
     }
   }
 }
