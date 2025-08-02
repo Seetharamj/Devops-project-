@@ -23,7 +23,7 @@ pipeline {
     stage('Push to DockerHub') {
       steps {
         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-        sh 'docker push seetharamj/devops-node-app'
+        sh 'docker push seetharam10/devops-node-app'
       }
     }
 
