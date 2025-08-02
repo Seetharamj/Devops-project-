@@ -94,8 +94,6 @@ resource "aws_instance" "jenkins" {
   key_name               = var.key_name
   associate_public_ip_address = true
 
-  user_data = file("jenkins/install_jenkins.sh")
-
   tags = { Name = "jenkins-server" }
 }
 
