@@ -93,7 +93,8 @@ resource "aws_instance" "jenkins" {
   vpc_security_group_ids = [aws_security_group.devops_sg.id]
   key_name               = var.key_name
   associate_public_ip_address = true
-
+  
+user_data = file("../jenkins/install_jenkins.sh")
   tags = { Name = "jenkins-server" }
 }
 
