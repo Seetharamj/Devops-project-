@@ -15,7 +15,7 @@ pipeline {
     stage('Build Docker Image') {
       steps {
         dir('app') {
-          sh 'docker build -t seetharamj/devops-node-app .'
+          sh 'docker build -t seetharam10/devops-node-app .'
         }
       }
     }
