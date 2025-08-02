@@ -1,14 +1,10 @@
 pipeline {
   agent any
 
-  environment {
-    DOCKERHUB_CREDENTIALS = credentials('dockerhub-login')
-  }
-
   stages {
     stage('Clone Repo') {
       steps {
-        git 'https://github.com/Seetharamj/Devops-project-.git'
+        git branch: 'main', url: 'https://github.com/Seetharamj/Devops-project-.git'
       }
     }
 
@@ -20,21 +16,25 @@ pipeline {
 
     stage('Push to DockerHub') {
       steps {
-        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-        sh 'docker push seetharamj/devops-node-app'
+        withCredentials([usernamePassword(credentialsId: 'dockerhub-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+          sh '''
+            echo $PASSWORD | docker login -u $USERNAME --password-stdin
+            docker push seetharamj/devops-node-app
+          '''
+        }
       }
     }
 
     stage('Deploy to EC2') {
       steps {
-        sshagent(['ec2-ssh-key']) {
+        sshagent(credentials: ['ec2-ssh-key']) {
           sh '''
-            ssh -o StrictHostKeyChecking=no ubuntu@13.201.127.123 "
+            ssh -o StrictHostKeyChecking=no ubuntu@13.201.127.123 '
               docker pull seetharamj/devops-node-app &&
               docker stop devops-app || true &&
               docker rm devops-app || true &&
               docker run -d -p 3000:3000 --name devops-app seetharamj/devops-node-app
-            "
+            '
           '''
         }
       }
@@ -47,9 +47,6 @@ pipeline {
     }
     failure {
       echo '❌ Pipeline failed. Check the logs above.'
-    }
-    always {
-      echo '⚙️ Pipeline has finished running (success or fail).'
     }
   }
 }
