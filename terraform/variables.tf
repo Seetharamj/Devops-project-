@@ -15,8 +15,9 @@ variable "private_subnet_cidr" {
 }
 
 variable "ami_id" {
-  default = "ami-053b0d53c279acc90"
+  default = "ami-03f4878755434977f"
 }
+
 
 variable "instance_type" {
   default = "t3.large"
