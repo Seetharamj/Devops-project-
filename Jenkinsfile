@@ -2,8 +2,10 @@ pipeline {
   agent any
 
   environment {
-    DOCKERHUB_CREDENTIALS = credentials('dockerhub-login')
-  }
+        DOCKERHUB_USERNAME = 'seetharam10'
+        IMAGE_NAME = 'devops-node-app'
+        REMOTE_HOST = 'ec2-user@13.201.127.123'
+    }
 
   stages {
     stage('Clone Repo') {
