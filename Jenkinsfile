@@ -3,6 +3,7 @@ pipeline {
 
   environment {
         DOCKERHUB_USERNAME = 'seetharam10'
+         DOCKERHUB_CREDENTIALS = credentials('dockerhub-login')
         IMAGE_NAME = 'devops-node-app'
         REMOTE_HOST = 'ec2-user@13.201.127.123'
     }
